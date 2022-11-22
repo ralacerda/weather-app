@@ -1,10 +1,12 @@
 <script setup>
 import { useFetchGeocoding } from './useFetchGeocoding';
+import { useFetchWeather } from './useFetchWeather';
 import { useLocalStorage } from '@vueuse/core';
 
 const cityList = ref('');
 const queryCity = ref('');
 const currentCity = useLocalStorage('currentCity', ref({ name: '' }));
+const currentWeather = ref('');
 
 function setCityList() {
   useFetchGeocoding(queryCity.value).then(
@@ -12,16 +14,24 @@ function setCityList() {
   );
 }
 
+function setWeather(lat, long) {
+  useFetchWeather(lat, long).then(
+    (response) => (currentWeather.value = response)
+  );
+}
+
 function setCity(city, event) {
   currentCity.value.name = city.name;
   currentCity.value.latitude = city.latitude;
   currentCity.value.longitude = city.longitude;
+  setWeather(city.latitude, city.longitude);
 }
 
 onMounted(() => {
   if (currentCity.value.name) {
     queryCity.value = currentCity.value.name;
     setCityList();
+    setWeather(currentCity.value.latitude, currentCity.value.longitude);
   }
 });
 </script>
@@ -42,6 +52,11 @@ onMounted(() => {
       </ul>
     </div>
   </div>
+  {{ currentWeather }}
+
+  <div class="second" v-if="currentWeather">
+    {{ currentWeather.current_weather }}
+  </div>
 </template>
 
 <style>
@@ -49,5 +64,9 @@ li {
   background-color: aliceblue;
   padding: 0.5rem;
   margin: 0.5rem;
+}
+
+.second {
+  color: red;
 }
 </style>
