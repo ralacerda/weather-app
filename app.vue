@@ -12,8 +12,10 @@ function setCityList() {
   );
 }
 
-function setCity(name) {
-  currentCity.name = name;
+function setCity(city, event) {
+  currentCity.value.name = city.name;
+  currentCity.value.latitude = city.latitude;
+  currentCity.value.longitude = city.longitude;
 }
 
 onMounted(() => {
@@ -26,17 +28,15 @@ onMounted(() => {
 
 <template>
   <div>
-    current city is: {{ currentCity.name }}
+    current city is: {{ currentCity.name }} at lat
+    {{ currentCity.latitude }} and long {{ currentCity.longitude }}
     <button @click="setCityList">Fetch the list of cities</button>
     <div>
       <input type="text" v-model.lazy="queryCity" />
     </div>
     <div>
       <ul>
-        <li
-          v-for="city in cityList.results"
-          @click="currentCity.name = city.name"
-        >
+        <li v-for="city in cityList.results" @click="setCity(city, $event)">
           {{ city.name }} - {{ city.admin1 }}
         </li>
       </ul>
