@@ -2,13 +2,13 @@
 import { useFetchGeocoding } from './useFetchGeocoding';
 import { useLocalStorage } from '@vueuse/core';
 
-const stuff = ref('');
+const cityList = ref('');
 const queryCity = ref('');
 const currentCity = useLocalStorage('currentCity', ref({ name: '' }));
 
-function setStuff() {
+function setCityList() {
   useFetchGeocoding(queryCity.value).then(
-    (response) => (stuff.value = response)
+    (response) => (cityList.value = response)
   );
 }
 
@@ -19,7 +19,7 @@ function setCity(name) {
 onMounted(() => {
   if (currentCity.value.name) {
     queryCity.value = currentCity.value.name;
-    setStuff();
+    setCityList();
   }
 });
 </script>
@@ -27,13 +27,16 @@ onMounted(() => {
 <template>
   <div>
     current city is: {{ currentCity.name }}
-    <button @click="setStuff">Fetch the stuff</button>
+    <button @click="setCityList">Fetch the list of cities</button>
     <div>
       <input type="text" v-model.lazy="queryCity" />
     </div>
     <div>
       <ul>
-        <li v-for="city in stuff.results" @click="currentCity.name = city.name">
+        <li
+          v-for="city in cityList.results"
+          @click="currentCity.name = city.name"
+        >
           {{ city.name }} - {{ city.admin1 }}
         </li>
       </ul>
