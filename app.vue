@@ -27,6 +27,22 @@ function setCity(city) {
   setWeather(city.latitude, city.longitude);
 }
 
+const formatTime = (datetime) => {
+  return new Date(datetime).toLocaleTimeString(undefined, {
+    hour12: false,
+    hour: '2-digit',
+    minute: '2-digit',
+  });
+};
+
+const displaySunrise = computed(() => {
+  return formatTime(currentWeather.value.daily.sunrise[0]);
+});
+
+const displaySunset = computed(() => {
+  return formatTime(currentWeather.value.daily.sunset[0]);
+});
+
 onMounted(() => {
   if (currentCity.value.name) {
     queryCity.value = currentCity.value.name;
@@ -55,8 +71,8 @@ onMounted(() => {
   {{ currentWeather }}
 
   <div class="second" v-if="currentWeather">
-    Sunrise is at {{ currentWeather.daily.sunrise[0] }} Sunset is at:
-    {{ currentWeather.daily.sunset[0] }}
+    Sunrise is at {{ displaySunrise }} Sunset is at:
+    {{ displaySunset }}
   </div>
 </template>
 
