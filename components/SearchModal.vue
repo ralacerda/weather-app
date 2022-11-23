@@ -26,7 +26,7 @@ const filteredCities = computed(() => {
 </script>
 
 <template>
-  <Transition name="modal">
+  <Transition name="fadeIn">
     <div v-if="show" class="modal-mask">
       <div class="modal-container">
         <div>
@@ -64,13 +64,5 @@ const filteredCities = computed(() => {
   border-radius: 2px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.33);
   transition: all 0.3s ease;
-}
-
-.modal-enter-from {
-  opacity: 0;
-}
-
-.modal-leave-to {
-  opacity: 0;
 }
 </style>

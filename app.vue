@@ -6,6 +6,7 @@ const currentWeather = ref('');
 const showModal = ref(false);
 
 function setWeather(latitude, longitude, timezone) {
+  currentWeather.value = '';
   useFetchWeather(latitude, longitude, timezone).then(
     (response) => (currentWeather.value = response)
   );
@@ -22,20 +23,12 @@ function setCity(city = null) {
   showModal.value = false;
 }
 
-const formatTime = (datetime) => {
-  return new Date(datetime).toLocaleTimeString(undefined, {
-    hour12: false,
-    hour: '2-digit',
-    minute: '2-digit',
-  });
-};
-
 const displaySunrise = computed(() => {
-  return formatTime(currentWeather.value.daily.sunrise[0]);
+  return currentWeather.value.daily.sunrise[0];
 });
 
 const displaySunset = computed(() => {
-  return formatTime(currentWeather.value.daily.sunset[0]);
+  return currentWeather.value.daily.sunset[0];
 });
 
 onMounted(() => {
@@ -51,16 +44,15 @@ onMounted(() => {
 
 <template>
   <div>
-    current city is: {{ currentCity.name }} at lat
-    {{ currentCity.latitude }} and long {{ currentCity.longitude }}
-  </div>
-  {{ currentWeather }}
-
-  <div class="second" v-if="currentWeather">
-    Sunrise is at {{ displaySunrise }} Sunset is at:
-    {{ displaySunset }}
+    {{ currentCity.name }}
   </div>
 
+  <Transition name="fadeIn" mode="out-in">
+    <div class="second" v-if="currentWeather">
+      <DisplayTimes :sunset="displaySunset" :sunrise="displaySunrise" />
+    </div>
+    <div v-else>LOADING WEATHER</div>
+  </Transition>
   <button @click="showModal = true">Pick a city</button>
 
   <Teleport to="body">
@@ -71,5 +63,15 @@ onMounted(() => {
 <style>
 .second {
   color: red;
+}
+
+.fadeIn-enter-active,
+.fadeIn-leave-active {
+  transition: opacity 0.2s;
+}
+
+.fadeIn-enter-from,
+.fadeIn-leave-to {
+  opacity: 0;
 }
 </style>
