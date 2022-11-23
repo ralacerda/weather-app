@@ -1,6 +1,4 @@
 <script setup>
-import { useFetchGeocoding } from './useFetchGeocoding';
-import { useFetchWeather } from './useFetchWeather';
 import { useLocalStorage } from '@vueuse/core';
 
 const cityList = ref('');

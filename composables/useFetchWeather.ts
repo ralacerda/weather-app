@@ -1,6 +1,5 @@
 export async function useFetchWeather(latitude: Number, longitude: Number) {
   const { data } = await useFetch(`https://api.open-meteo.com/v1/forecast`, {
-    pick: ['daily'],
     query: {
       latitude,
       longitude,
