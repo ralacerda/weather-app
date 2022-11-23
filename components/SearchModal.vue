@@ -5,11 +5,13 @@ const props = defineProps({
 
 const citiesList = ref('');
 const queryCity = ref('');
+const fetchingCities = ref(false);
 
-function setCityList() {
-  useFetchGeocoding(queryCity.value).then(
-    (response) => (citiesList.value = response)
-  );
+async function fetchCityList() {
+  citiesList.value = '';
+  fetchingCities.value = true;
+  citiesList.value = await useFetchGeocoding(queryCity.value);
+  fetchingCities.value = false;
 }
 
 const filteredCities = computed(() => {
@@ -29,8 +31,9 @@ const filteredCities = computed(() => {
       <div class="modal-container">
         <div>
           <input type="text" v-model.lazy="queryCity" />
-          <button @click="setCityList">Fetch the list of cities</button>
+          <button @click="fetchCityList">Fetch the list of cities</button>
         </div>
+        <div v-if="fetchingCities">LOADING CITIES</div>
         <ul>
           <li v-for="city in filteredCities" @click="$emit('close', city)">
             {{ city.name }} - {{ city.admin1 }}
