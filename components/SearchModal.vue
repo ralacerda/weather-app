@@ -3,14 +3,25 @@ const props = defineProps({
   show: Boolean,
 });
 
-const cityList = ref('');
+const citiesList = ref('');
 const queryCity = ref('');
 
 function setCityList() {
   useFetchGeocoding(queryCity.value).then(
-    (response) => (cityList.value = response)
+    (response) => (citiesList.value = response)
   );
 }
+
+const filteredCities = computed(() => {
+  console.log(citiesList.value);
+  if (citiesList.value) {
+    return citiesList.value.results
+      .filter(
+        (city) => city.feature_code.startsWith('PPL') && city.population > 0
+      )
+      .sort((a, b) => b.population - a.population);
+  }
+});
 </script>
 
 <template>
@@ -22,7 +33,7 @@ function setCityList() {
           <button @click="setCityList">Fetch the list of cities</button>
         </div>
         <ul>
-          <li v-for="city in cityList.results" @click="$emit('close', city)">
+          <li v-for="city in filteredCities" @click="$emit('close', city)">
             {{ city.name }} - {{ city.admin1 }}
           </li>
         </ul>
