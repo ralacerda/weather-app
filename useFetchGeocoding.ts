@@ -1,6 +1,7 @@
-export async function useFetchGeocoding(city: String) {
-  const response = await fetch(
-    `https://geocoding-api.open-meteo.com/v1/search?name=${city}`
+export async function useFetchGeocoding(name: String) {
+  const { data } = await useFetch(
+    `https://geocoding-api.open-meteo.com/v1/search`,
+    { query: { name } }
   );
-  return response.json();
+  return data.value;
 }

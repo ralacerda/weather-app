@@ -1,6 +1,14 @@
-export async function useFetchWeather(lat: Number, long: Number) {
-  const response = await fetch(
-    `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${long}&daily=sunrise,sunset&current_weather=true&timezone=America%2FSao_Paulo`
-  );
-  return response.json();
+export async function useFetchWeather(latitude: Number, longitude: Number) {
+  const { data } = await useFetch(`https://api.open-meteo.com/v1/forecast`, {
+    pick: ['daily'],
+    query: {
+      latitude,
+      longitude,
+      timezone: 'America/Sao_Paulo',
+      daily: 'sunset,sunrise',
+    },
+  });
+  return data.value;
 }
+
+// latitude=${lat}&longitude=${long}&daily=sunrise,sunset&timezone=America%2FSao_Paulo

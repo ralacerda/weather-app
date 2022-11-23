@@ -55,7 +55,8 @@ onMounted(() => {
   {{ currentWeather }}
 
   <div class="second" v-if="currentWeather">
-    {{ currentWeather.current_weather }}
+    Sunrise is at {{ currentWeather.daily.sunrise[0] }} Sunset is at:
+    {{ currentWeather.daily.sunset[0] }}
   </div>
 </template>
 
