@@ -13,7 +13,6 @@ function setCityList() {
 }
 
 const filteredCities = computed(() => {
-  console.log(citiesList.value);
   if (citiesList.value) {
     return citiesList.value.results
       .filter(
