@@ -20,7 +20,7 @@ function setWeather(lat, long) {
   );
 }
 
-function setCity(city, event) {
+function setCity(city) {
   currentCity.value.name = city.name;
   currentCity.value.latitude = city.latitude;
   currentCity.value.longitude = city.longitude;
@@ -46,7 +46,7 @@ onMounted(() => {
     </div>
     <div>
       <ul>
-        <li v-for="city in cityList.results" @click="setCity(city, $event)">
+        <li v-for="city in cityList.results" @click="setCity(city)">
           {{ city.name }} - {{ city.admin1 }}
         </li>
       </ul>
