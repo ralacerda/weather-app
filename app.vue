@@ -5,8 +5,8 @@ const currentCity = useLocalStorage('currentCity', ref({ name: '' }));
 const currentWeather = ref('');
 const showModal = ref(false);
 
-function setWeather(lat, long) {
-  useFetchWeather(lat, long).then(
+function setWeather(latitude, longitude, timezone) {
+  useFetchWeather(latitude, longitude, timezone).then(
     (response) => (currentWeather.value = response)
   );
 }
@@ -16,7 +16,8 @@ function setCity(city = null) {
     currentCity.value.name = city.name;
     currentCity.value.latitude = city.latitude;
     currentCity.value.longitude = city.longitude;
-    setWeather(city.latitude, city.longitude);
+    currentCity.value.timezone = city.timezone;
+    setWeather(city.latitude, city.longitude, city.timezone);
   }
   showModal.value = false;
 }
@@ -39,7 +40,11 @@ const displaySunset = computed(() => {
 
 onMounted(() => {
   if (currentCity.value.name) {
-    setWeather(currentCity.value.latitude, currentCity.value.longitude);
+    setWeather(
+      currentCity.value.latitude,
+      currentCity.value.longitude,
+      currentCity.value.timezone
+    );
   }
 });
 </script>
