@@ -1,16 +1,9 @@
 <script setup>
 import { useLocalStorage } from '@vueuse/core';
 
-const cityList = ref('');
-const queryCity = ref('');
 const currentCity = useLocalStorage('currentCity', ref({ name: '' }));
 const currentWeather = ref('');
-
-function setCityList() {
-  useFetchGeocoding(queryCity.value).then(
-    (response) => (cityList.value = response)
-  );
-}
+const showModal = ref(false);
 
 function setWeather(lat, long) {
   useFetchWeather(lat, long).then(
@@ -18,11 +11,14 @@ function setWeather(lat, long) {
   );
 }
 
-function setCity(city) {
-  currentCity.value.name = city.name;
-  currentCity.value.latitude = city.latitude;
-  currentCity.value.longitude = city.longitude;
-  setWeather(city.latitude, city.longitude);
+function setCity(city = null) {
+  if (city) {
+    currentCity.value.name = city.name;
+    currentCity.value.latitude = city.latitude;
+    currentCity.value.longitude = city.longitude;
+    setWeather(city.latitude, city.longitude);
+  }
+  showModal.value = false;
 }
 
 const formatTime = (datetime) => {
@@ -43,8 +39,6 @@ const displaySunset = computed(() => {
 
 onMounted(() => {
   if (currentCity.value.name) {
-    queryCity.value = currentCity.value.name;
-    setCityList();
     setWeather(currentCity.value.latitude, currentCity.value.longitude);
   }
 });
@@ -54,17 +48,6 @@ onMounted(() => {
   <div>
     current city is: {{ currentCity.name }} at lat
     {{ currentCity.latitude }} and long {{ currentCity.longitude }}
-    <button @click="setCityList">Fetch the list of cities</button>
-    <div>
-      <input type="text" v-model.lazy="queryCity" />
-    </div>
-    <div>
-      <ul>
-        <li v-for="city in cityList.results" @click="setCity(city)">
-          {{ city.name }} - {{ city.admin1 }}
-        </li>
-      </ul>
-    </div>
   </div>
   {{ currentWeather }}
 
@@ -72,15 +55,15 @@ onMounted(() => {
     Sunrise is at {{ displaySunrise }} Sunset is at:
     {{ displaySunset }}
   </div>
+
+  <button @click="showModal = true">Pick a city</button>
+
+  <Teleport to="body">
+    <SearchModal :show="showModal" @close="setCity" />
+  </Teleport>
 </template>
 
 <style>
-li {
-  background-color: aliceblue;
-  padding: 0.5rem;
-  margin: 0.5rem;
-}
-
 .second {
   color: red;
 }
