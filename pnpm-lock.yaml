@@ -1,16 +1,20 @@
 lockfileVersion: 5.4
 
 specifiers:
+  '@iconify-json/mdi': ^1.1.36
   '@unocss/nuxt': ^0.46.5
   '@vueuse/core': ^9.6.0
   nuxt: 3.0.0
+  unplugin-icons: ^0.14.14
 
 dependencies:
   '@vueuse/core': 9.6.0
 
 devDependencies:
+  '@iconify-json/mdi': 1.1.36
   '@unocss/nuxt': 0.46.5
   nuxt: 3.0.0
+  unplugin-icons: 0.14.14
 
 packages:
 
@@ -31,6 +35,10 @@ packages:
 
   /@antfu/utils/0.5.2:
     resolution: {integrity: sha512-CQkeV+oJxUazwjlHD0/3ZD08QWKuGQkhnrKo3e6ly5pd48VUpXbb77q0xMU4+vc2CkJnDS02Eq/M9ugyX20XZA==}
+    dev: true
+
+  /@antfu/utils/0.6.3:
+    resolution: {integrity: sha512-sEYpyyKUPOew9QsXZ8feRVMzW6DWLviwOl+/ap06UQW02A8Srbc95CPHVm4eUbiBzBgD46eyIT+przv//KSSlQ==}
     dev: true
 
   /@babel/code-frame/7.18.6:
@@ -345,6 +353,12 @@ packages:
     requiresBuild: true
     dev: true
     optional: true
+
+  /@iconify-json/mdi/1.1.36:
+    resolution: {integrity: sha512-3aWCVjDIseO8COo8zPkmxOZUFjdWsvTQQnk6zVrOaJh2K8oKuBznw10FSJZgQM7qAn6S54/oejyqkWfODRZV1Q==}
+    dependencies:
+      '@iconify/types': 2.0.0
+    dev: true
 
   /@iconify/types/2.0.0:
     resolution: {integrity: sha512-+wluvCrRhXrhyOmRDJ3q8mux9JkKy5SJ/v8ol2tu4FVjyYvtEzkc/3pK15ET6RKg4b4w4BmTk1+gsCUhf21Ykg==}
@@ -4640,6 +4654,34 @@ packages:
       - rollup
       - supports-color
       - vite
+    dev: true
+
+  /unplugin-icons/0.14.14:
+    resolution: {integrity: sha512-5apStlsB9AetB7JQ0DpHG+aFNGQOL8yrO+6XbYadywMXwCeLAPDPdSW0gWd8R3aB/rER1PM+LQikXlaakHH1Uw==}
+    peerDependencies:
+      '@svgr/core': '>=5.5.0'
+      '@vue/compiler-sfc': ^3.0.2
+      vue-template-compiler: ^2.6.12
+      vue-template-es2015-compiler: ^1.9.0
+    peerDependenciesMeta:
+      '@svgr/core':
+        optional: true
+      '@vue/compiler-sfc':
+        optional: true
+      vue-template-compiler:
+        optional: true
+      vue-template-es2015-compiler:
+        optional: true
+    dependencies:
+      '@antfu/install-pkg': 0.1.1
+      '@antfu/utils': 0.6.3
+      '@iconify/utils': 2.0.2
+      debug: 4.3.4
+      kolorist: 1.6.0
+      local-pkg: 0.4.2
+      unplugin: 1.0.0
+    transitivePeerDependencies:
+      - supports-color
     dev: true
 
   /unplugin/0.10.2:
