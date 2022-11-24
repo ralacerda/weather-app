@@ -23,6 +23,15 @@ const filteredCities = computed(() => {
       .sort((a, b) => b.population - a.population);
   }
 });
+
+// https://dev.to/jorik/country-code-to-flag-emoji-a21
+function getFlagEmoji(countryCode) {
+  const codePoints = countryCode
+    .toUpperCase()
+    .split('')
+    .map((char) => 127397 + char.charCodeAt());
+  return String.fromCodePoint(...codePoints);
+}
 </script>
 
 <template>
@@ -36,7 +45,8 @@ const filteredCities = computed(() => {
         <div v-if="fetchingCities">LOADING CITIES</div>
         <ul>
           <li v-for="city in filteredCities" @click="$emit('close', city)">
-            {{ city.name }} - {{ city.admin1 }}
+            {{ getFlagEmoji(city.country_code) }} {{ city.name }} -
+            {{ city.admin1 }}
           </li>
         </ul>
         <button @click="$emit('close')">close</button>
